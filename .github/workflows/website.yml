@@ -1,0 +1,96 @@
+name: Website CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'website/**'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'website/**'
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 9.14.4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - uses: actions/cache/save@v3
+        with:
+          path: |
+            node_modules
+            website/node_modules
+          key: ${{ runner.os }}-website-${{ hashFiles('**/pnpm-lock.yaml') }}
+
+  lint:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v3
+        with:
+          path: |
+            node_modules
+            website/node_modules
+          key: ${{ runner.os }}-website-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - run: pnpm --filter @weekly-pr-reports/website lint
+
+  format:
+    needs: setup
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v3
+        with:
+          path: |
+            node_modules
+            website/node_modules
+          key: ${{ runner.os }}-website-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - run: pnpm --filter @weekly-pr-reports/website format --check
+
+  build:
+    needs: [lint, format]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache/restore@v3
+        with:
+          path: |
+            node_modules
+            website/node_modules
+          key: ${{ runner.os }}-website-${{ hashFiles('**/pnpm-lock.yaml') }}
+      - run: pnpm --filter @weekly-pr-reports/website build
+      - uses: actions/upload-artifact@v3
+        with:
+          name: website-dist
+          path: website/dist
+
+  deploy:
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          name: website-dist
+          path: dist
+      - uses: actions/configure-pages@v3
+      - uses: actions/upload-pages-artifact@v2
+        with:
+          path: dist
+      - id: deployment
+        uses: actions/deploy-pages@v2 
