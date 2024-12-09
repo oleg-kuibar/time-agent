@@ -1,15 +1,22 @@
 # name: App CI
 
 # on:
-#   workflow_dispatch:
 #   push:
 #     branches: [main]
 #     paths:
 #       - 'apps/github-app/**'
+#       - 'package.json'
+#       - 'pnpm-lock.yaml'
+#       - 'pnpm-workspace.yaml'
+#       - '.github/workflows/github-app.yml'
 #   pull_request:
 #     branches: [main]
 #     paths:
 #       - 'apps/github-app/**'
+#       - 'package.json'
+#       - 'pnpm-lock.yaml'
+#       - 'pnpm-workspace.yaml'
+#       - '.github/workflows/github-app.yml'
 
 # jobs:
 #   setup:
@@ -29,6 +36,7 @@
 #           path: |
 #             node_modules
 #             apps/github-app/node_modules
+#             **/dist
 #           key: ${{ runner.os }}-github-app-${{ hashFiles('**/pnpm-lock.yaml') }}
 
 #   lint:
@@ -41,6 +49,7 @@
 #           path: |
 #             node_modules
 #             apps/github-app/node_modules
+#             **/dist
 #           key: ${{ runner.os }}-github-app-${{ hashFiles('**/pnpm-lock.yaml') }}
 #       - run: pnpm --filter @weekly-pr-reports/github-app lint
 
@@ -54,6 +63,7 @@
 #           path: |
 #             node_modules
 #             apps/github-app/node_modules
+#             **/dist
 #           key: ${{ runner.os }}-github-app-${{ hashFiles('**/pnpm-lock.yaml') }}
 #       - run: pnpm --filter @weekly-pr-reports/github-app test
 
@@ -67,6 +77,7 @@
 #           path: |
 #             node_modules
 #             apps/github-app/node_modules
+#             **/dist
 #           key: ${{ runner.os }}-github-app-${{ hashFiles('**/pnpm-lock.yaml') }}
 #       - run: pnpm --filter @weekly-pr-reports/github-app build
 #       - uses: actions/upload-artifact@v3
