@@ -1,0 +1,6 @@
+packages:
+  - 'apps/*'
+  - 'docs'
+  - 'examples'
+  - 'website'
+  - 'packages/*'
