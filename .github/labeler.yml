@@ -1,63 +1,74 @@
 # Website related changes
 website:
-  - 'website/**'
-  - 'package.json'
-  - 'pnpm-lock.yaml'
-  - 'pnpm-workspace.yaml'
-  - '.github/workflows/website.yml'
+  - changed-files:
+      - any-glob-to-any-file: 'website/**'
+      - any-glob-to-any-file: 'package.json'
+      - any-glob-to-any-file: 'pnpm-lock.yaml'
+      - any-glob-to-any-file: 'pnpm-workspace.yaml'
+      - any-glob-to-any-file: '.github/workflows/website.yml'
 
 # Dependencies
 dependencies:
-  - 'package.json'
-  - 'pnpm-lock.yaml'
-  - 'website/package.json'
+  - changed-files:
+      - any-glob-to-any-file: 'package.json'
+      - any-glob-to-any-file: 'pnpm-lock.yaml'
+      - any-glob-to-any-file: 'website/package.json'
 
 # Configuration changes
 config:
-  - '.github/**/*'
-  - '*.config.{js,ts,mjs}'
-  - 'tsconfig.json'
-  - '.eslintrc.*'
-  - '.prettierrc.*'
+  - changed-files:
+      - any-glob-to-any-file: '.github/**/*'
+      - any-glob-to-any-file: '*.config.{js,ts,mjs}'
+      - any-glob-to-any-file: 'tsconfig.json'
+      - any-glob-to-any-file: '.eslintrc.*'
+      - any-glob-to-any-file: '.prettierrc.*'
 
 # Documentation
 documentation:
-  - '**/*.md'
-  - '**/*.mdx'
-  - 'docs/**/*'
+  - changed-files:
+      - any-glob-to-any-file: '**/*.md'
+      - any-glob-to-any-file: '**/*.mdx'
+      - any-glob-to-any-file: 'docs/**/*'
 
 # TypeScript files
 typescript:
-  - '**/*.ts'
-  - '**/*.tsx'
-  - 'tsconfig.json'
+  - changed-files:
+      - any-glob-to-any-file: '**/*.ts'
+      - any-glob-to-any-file: '**/*.tsx'
+      - any-glob-to-any-file: 'tsconfig.json'
 
 # React components
 components:
-  - 'website/src/components/**/*'
+  - changed-files:
+      - any-glob-to-any-file: 'website/src/components/**/*'
 
 # Astro pages/layouts
 astro:
-  - 'website/src/pages/**/*.astro'
-  - 'website/src/layouts/**/*.astro'
+  - changed-files:
+      - any-glob-to-any-file: 'website/src/pages/**/*.astro'
+      - any-glob-to-any-file: 'website/src/layouts/**/*.astro'
 
 # Styles
 styles:
-  - '**/*.css'
-  - '**/*.scss'
-  - 'tailwind.config.*'
+  - changed-files:
+      - any-glob-to-any-file: '**/*.css'
+      - any-glob-to-any-file: '**/*.scss'
+      - any-glob-to-any-file: 'tailwind.config.*'
 
 # Testing
 testing:
-  - '**/*.test.*'
-  - '**/*.spec.*'
-  - 'vitest.config.*'
+  - changed-files:
+      - any-glob-to-any-file: '**/*.test.*'
+      - any-glob-to-any-file: '**/*.spec.*'
+      - any-glob-to-any-file: 'vitest.config.*'
 
 # CI/CD
 ci:
-  - '.github/workflows/**/*'
-  - '.github/actions/**/*'
+  - changed-files:
+      - any-glob-to-any-file: '.github/workflows/**/*'
+      - any-glob-to-any-file: '.github/actions/**/*'
 
 # GitHub Actions
 github-actions:
-  - '.github/**' 
+  - changed-files:
+      - any-glob-to-any-file: '.github/**' 
