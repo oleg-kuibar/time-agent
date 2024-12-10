@@ -80,7 +80,7 @@ jobs:
           fail-on-cache-miss: true
 
       - name: Lint
-        run: pnpm --filter @weekly-pr-reports/website lint
+        run: pnpm --filter @weekly-pr-reports/website lint:fix
 
   build:
     needs: lint
