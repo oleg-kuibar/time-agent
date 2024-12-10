@@ -18,78 +18,97 @@ on:
       - 'pnpm-workspace.yaml'
       - '.github/workflows/website.yml'
 
+# Allow one concurrent deployment
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   setup:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
         with:
           version: 9.14.4
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
-      # Install all workspace dependencies
-      - run: pnpm install --frozen-lockfile
-      - uses: actions/cache/save@v3
+          cache-dependency-path: '**/pnpm-lock.yaml'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Cache node_modules
+        uses: actions/cache/save@v4
         with:
           path: |
             node_modules
             website/node_modules
-            **/dist
-          key: ${{ runner.os }}-website-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
 
   lint:
     needs: setup
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache/restore@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
         with:
           path: |
             node_modules
             website/node_modules
-            **/dist
-          key: ${{ runner.os }}-website-${{ hashFiles('**/pnpm-lock.yaml') }}
-      - run: pnpm --filter @weekly-pr-reports/website lint
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          fail-on-cache-miss: true
+
+      - name: Lint
+        run: pnpm --filter @weekly-pr-reports/website lint
 
   build:
     needs: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/cache/restore@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Restore node_modules
+        uses: actions/cache/restore@v4
         with:
           path: |
             node_modules
             website/node_modules
-            **/dist
-          key: ${{ runner.os }}-website-${{ hashFiles('**/pnpm-lock.yaml') }}
-      - run: pnpm --filter @weekly-pr-reports/website build
-      - uses: actions/upload-artifact@v3
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/pnpm-lock.yaml') }}
+          fail-on-cache-miss: true
+
+      - name: Build
+        run: pnpm --filter @weekly-pr-reports/website build
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: website-dist
           path: website/dist
 
   deploy:
     needs: build
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - uses: actions/download-artifact@v3
-        with:
-          name: website-dist
-          path: dist
-      - uses: actions/configure-pages@v3
-      - uses: actions/upload-pages-artifact@v2
-        with:
-          path: dist
-      - id: deployment
-        uses: actions/deploy-pages@v2 
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
