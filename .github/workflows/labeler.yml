@@ -3,6 +3,13 @@ name: Labeler
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/labeler.yml'
+      - '.github/workflows/labeler.yml'
+  workflow_dispatch:  # Allow manual trigger
   
 permissions:
   contents: read
@@ -11,6 +18,7 @@ permissions:
 jobs:
   label:
     name: Label PR
+    if: github.event_name == 'pull_request'  # Only run on PRs
     runs-on: ubuntu-latest
     steps:
       - uses: actions/labeler@v5
