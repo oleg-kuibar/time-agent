@@ -1,6 +1,9 @@
 # Website related changes
 website:
-  - 'website/**/*'
+  - 'website/**'
+  - 'package.json'
+  - 'pnpm-lock.yaml'
+  - 'pnpm-workspace.yaml'
   - '.github/workflows/website.yml'
 
 # Dependencies
@@ -53,4 +56,8 @@ testing:
 # CI/CD
 ci:
   - '.github/workflows/**/*'
-  - '.github/actions/**/*' 
+  - '.github/actions/**/*'
+
+# GitHub Actions
+github-actions:
+  - '.github/**' 
