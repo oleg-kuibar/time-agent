@@ -8,14 +8,13 @@ const compat = new FlatCompat({
 });
 
 export default [
-  ...compat.extends('eslint:recommended'),
-  ...compat.extends('plugin:@typescript-eslint/recommended'),
-  ...compat.extends('plugin:react/recommended'),
-  ...compat.extends('plugin:react-hooks/recommended'),
-  ...compat.extends('plugin:astro/recommended'),
-  ...compat.extends('plugin:jsx-a11y/recommended'),
   {
-    ignores: ['**/dist/*', '**/node_modules/*'],
+    files: ['**/*.{js,jsx,ts,tsx}'],
+    ...compat.extends('eslint:recommended'),
+    ...compat.extends('plugin:@typescript-eslint/recommended'),
+    ...compat.extends('plugin:react/recommended'),
+    ...compat.extends('plugin:react-hooks/recommended'),
+    ...compat.extends('plugin:jsx-a11y/recommended'),
     rules: {
       'react/prop-types': 'off',
       'react/react-in-jsx-scope': 'off',
@@ -24,6 +23,15 @@ export default [
         argsIgnorePattern: '^_',
         varsIgnorePattern: '^_'
       }]
+    }
+  },
+  {
+    files: ['**/*.astro'],
+    ...compat.extends('plugin:astro/recommended'),
+    parser: 'astro-eslint-parser',
+    parserOptions: {
+      parser: '@typescript-eslint/parser',
+      extraFileExtensions: ['.astro']
     }
   }
 ]; 

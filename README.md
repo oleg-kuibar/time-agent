@@ -23,13 +23,13 @@ Automated time tracking for GitHub pull request reviews. Seamlessly integrates w
 ## Getting Started
 
 1. Install dependencies:   ```bash
-   pnpm install   ```
+   pnpm install```
 
 2. Start the GitHub app:   ```bash
-   pnpm start:app   ```
+   pnpm start:app```
 
 3. Build the website:   ```bash
-   pnpm build:website   ```
+   pnpm build:website```
 
 ## Documentation
 
@@ -37,4 +37,4 @@ Visit the [documentation](./docs/index.md) for detailed information about setup 
 
 ## License
 
-MIT 
+MIT
