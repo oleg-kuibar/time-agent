@@ -1,0 +1,56 @@
+# Website related changes
+website:
+  - 'website/**/*'
+  - '.github/workflows/website.yml'
+
+# Dependencies
+dependencies:
+  - 'package.json'
+  - 'pnpm-lock.yaml'
+  - 'website/package.json'
+
+# Configuration changes
+config:
+  - '.github/**/*'
+  - '*.config.{js,ts,mjs}'
+  - 'tsconfig.json'
+  - '.eslintrc.*'
+  - '.prettierrc.*'
+
+# Documentation
+documentation:
+  - '**/*.md'
+  - '**/*.mdx'
+  - 'docs/**/*'
+
+# TypeScript files
+typescript:
+  - '**/*.ts'
+  - '**/*.tsx'
+  - 'tsconfig.json'
+
+# React components
+components:
+  - 'website/src/components/**/*'
+
+# Astro pages/layouts
+astro:
+  - 'website/src/pages/**/*.astro'
+  - 'website/src/layouts/**/*.astro'
+
+# Styles
+styles:
+  - '**/*.css'
+  - '**/*.scss'
+  - 'tailwind.config.*'
+
+# Testing
+testing:
+  - '**/*.test.*'
+  - '**/*.spec.*'
+  - 'vitest.config.*'
+
+# CI/CD
+ci:
+  - '.github/workflows/**/*'
+  - '.github/actions/**/*' 
