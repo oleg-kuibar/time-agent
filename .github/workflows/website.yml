@@ -65,6 +65,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 9.14.4
+
       - name: Restore node_modules
         uses: actions/cache/restore@v4
         with:
