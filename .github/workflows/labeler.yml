@@ -21,7 +21,11 @@ jobs:
     if: github.event_name == 'pull_request'  # Only run on PRs
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/labeler@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Run Labeler
+        uses: actions/labeler@v5
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           sync-labels: true 
