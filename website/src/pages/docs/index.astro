@@ -1,25 +1,25 @@
 ---
-import Layout from '@layouts/Layout.astro';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import Layout from '@layouts/Layout.astro'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 
 const docs = [
   {
-    title: "Getting Started",
+    title: 'Getting Started',
     sections: [
-      { title: "Installation", href: "#installation" },
-      { title: "Configuration", href: "#configuration" },
-      { title: "Basic Usage", href: "#basic-usage" }
-    ]
+      { title: 'Installation', href: '#installation' },
+      { title: 'Configuration', href: '#configuration' },
+      { title: 'Basic Usage', href: '#basic-usage' },
+    ],
   },
   {
-    title: "Features",
+    title: 'Features',
     sections: [
-      { title: "Time Tracking", href: "#time-tracking" },
-      { title: "Harvest Integration", href: "#harvest" },
-      { title: "Slack Notifications", href: "#slack" }
-    ]
-  }
-];
+      { title: 'Time Tracking', href: '#time-tracking' },
+      { title: 'Harvest Integration', href: '#harvest' },
+      { title: 'Slack Notifications', href: '#slack' },
+    ],
+  },
+]
 ---
 
 <Layout title="Documentation - Weekly PR Reports">
@@ -28,29 +28,31 @@ const docs = [
       <div class="flex gap-8">
         <aside class="w-64 flex-shrink-0 hidden md:block">
           <nav class="sticky top-20 space-y-6">
-            {docs.map((section) => (
-              <div>
-                <h3 class="font-medium text-foreground mb-2">{section.title}</h3>
-                <ul class="space-y-2">
-                  {section.sections.map((item) => (
-                    <li>
-                      <a 
-                        href={item.href}
-                        class="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                      >
-                        {item.title}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+            {
+              docs.map((section) => (
+                <div>
+                  <h3 class="font-medium text-foreground mb-2">{section.title}</h3>
+                  <ul class="space-y-2">
+                    {section.sections.map((item) => (
+                      <li>
+                        <a
+                          href={item.href}
+                          class="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                        >
+                          {item.title}
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))
+            }
           </nav>
         </aside>
 
         <div class="flex-1 max-w-3xl prose prose-slate dark:prose-invert">
           <h1>Documentation</h1>
-          
+
           <h2 id="installation">Installation</h2>
           <p>To get started with Weekly PR Reports, install the GitHub App on your repositories:</p>
           <ol>
@@ -78,4 +80,4 @@ notifications:
       </div>
     </div>
   </main>
-</Layout> 
+</Layout>

@@ -1,71 +1,71 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
 @layer base {
   :root {
-    --background: 0 0% 100%;    /* pure white */
-    --foreground: 220 10% 40%;  /* cigarette ash */
+    --background: 0 0% 100%; /* pure white */
+    --foreground: 220 10% 40%; /* cigarette ash */
 
-    --card: 0 0% 100%;          /* pure white */
-    --card-foreground: 220 10% 40%;  /* cigarette ash */
- 
-    --popover: 0 0% 100%;       /* pure white */
-    --popover-foreground: 220 10% 40%;  /* cigarette ash */
- 
-    --primary: 122 32% 45%;     /* celtic-500 */
-    --primary-foreground: 120 20% 98%;  /* celtic-50 */
- 
-    --secondary: 120 24% 85%;   /* celtic-200 */
-    --secondary-foreground: 220 10% 40%;  /* cigarette ash */
- 
-    --muted: 120 24% 85%;       /* celtic-200 */
-    --muted-foreground: 120 33% 37%;  /* celtic-700 */
- 
-    --accent: 120 24% 85%;      /* celtic-200 */
-    --accent-foreground: 220 10% 40%;  /* cigarette ash */
- 
-    --destructive: 0 63% 31%;   /* dark red */
-    --destructive-foreground: 120 20% 98%;  /* celtic-50 */
+    --card: 0 0% 100%; /* pure white */
+    --card-foreground: 220 10% 40%; /* cigarette ash */
 
-    --border: 220 13% 91%;      /* light border */
-    --input: 220 13% 91%;       /* light input */
-    --ring: 122 32% 45%;        /* celtic-500 */
- 
+    --popover: 0 0% 100%; /* pure white */
+    --popover-foreground: 220 10% 40%; /* cigarette ash */
+
+    --primary: 122 32% 45%; /* celtic-500 */
+    --primary-foreground: 120 20% 98%; /* celtic-50 */
+
+    --secondary: 120 24% 85%; /* celtic-200 */
+    --secondary-foreground: 220 10% 40%; /* cigarette ash */
+
+    --muted: 120 24% 85%; /* celtic-200 */
+    --muted-foreground: 120 33% 37%; /* celtic-700 */
+
+    --accent: 120 24% 85%; /* celtic-200 */
+    --accent-foreground: 220 10% 40%; /* cigarette ash */
+
+    --destructive: 0 63% 31%; /* dark red */
+    --destructive-foreground: 120 20% 98%; /* celtic-50 */
+
+    --border: 220 13% 91%; /* light border */
+    --input: 220 13% 91%; /* light input */
+    --ring: 122 32% 45%; /* celtic-500 */
+
     --radius: 0.5rem;
   }
- 
+
   .dark {
-    --background: 220 17% 17%;  /* dark ash */
-    --foreground: 120 20% 98%;  /* celtic-50 */
- 
-    --card: 220 17% 20%;        /* slightly lighter ash */
-    --card-foreground: 120 20% 98%;  /* celtic-50 */
- 
-    --popover: 220 17% 20%;     /* slightly lighter ash */
-    --popover-foreground: 120 20% 98%;  /* celtic-50 */
- 
-    --primary: 122 32% 45%;     /* celtic-500 */
-    --primary-foreground: 120 20% 98%;  /* celtic-50 */
- 
-    --secondary: 220 17% 23%;   /* medium ash */
-    --secondary-foreground: 120 20% 98%;  /* celtic-50 */
- 
-    --muted: 220 17% 23%;       /* medium ash */
-    --muted-foreground: 120 24% 85%;  /* celtic-200 */
- 
-    --accent: 220 17% 23%;      /* medium ash */
-    --accent-foreground: 120 20% 98%;  /* celtic-50 */
- 
-    --destructive: 0 63% 31%;   /* dark red */
-    --destructive-foreground: 120 20% 98%;  /* celtic-50 */
- 
-    --border: 220 17% 25%;      /* border ash */
-    --input: 220 17% 25%;       /* border ash */
-    --ring: 122 32% 45%;        /* celtic-500 */
+    --background: 220 17% 17%; /* dark ash */
+    --foreground: 120 20% 98%; /* celtic-50 */
+
+    --card: 220 17% 20%; /* slightly lighter ash */
+    --card-foreground: 120 20% 98%; /* celtic-50 */
+
+    --popover: 220 17% 20%; /* slightly lighter ash */
+    --popover-foreground: 120 20% 98%; /* celtic-50 */
+
+    --primary: 122 32% 45%; /* celtic-500 */
+    --primary-foreground: 120 20% 98%; /* celtic-50 */
+
+    --secondary: 220 17% 23%; /* medium ash */
+    --secondary-foreground: 120 20% 98%; /* celtic-50 */
+
+    --muted: 220 17% 23%; /* medium ash */
+    --muted-foreground: 120 24% 85%; /* celtic-200 */
+
+    --accent: 220 17% 23%; /* medium ash */
+    --accent-foreground: 120 20% 98%; /* celtic-50 */
+
+    --destructive: 0 63% 31%; /* dark red */
+    --destructive-foreground: 120 20% 98%; /* celtic-50 */
+
+    --border: 220 17% 25%; /* border ash */
+    --input: 220 17% 25%; /* border ash */
+    --ring: 122 32% 45%; /* celtic-500 */
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -73,4 +73,4 @@
   body {
     @apply bg-background text-foreground;
   }
-} 
+}

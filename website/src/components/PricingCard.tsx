@@ -1,9 +1,9 @@
-import { memo } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Check } from 'lucide-react';
-import type { PricingTier } from '@/config/pricing';
+import type { PricingTier } from '@/config/pricing'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Check } from 'lucide-react'
+import { memo } from 'react'
 
-const PricingCard = memo(function PricingCard({ tier }: { tier: PricingTier }) {
+const PricingCard = memo(({ tier }: { tier: PricingTier }) => {
   return (
     <Card className={`relative flex flex-col ${tier.highlighted ? 'border-primary shadow-lg' : ''}`}>
       {tier.highlighted && (
@@ -22,7 +22,7 @@ const PricingCard = memo(function PricingCard({ tier }: { tier: PricingTier }) {
       </CardHeader>
       <CardContent className="flex flex-col flex-1">
         <ul className="space-y-3 flex-1">
-          {tier.features.map((feature) => (
+          {tier.features.map(feature => (
             <li key={feature} className="flex items-center gap-2">
               <Check className="w-4 h-4 text-primary" />
               <span className="text-sm">{feature}</span>
@@ -40,7 +40,7 @@ const PricingCard = memo(function PricingCard({ tier }: { tier: PricingTier }) {
         </button>
       </CardContent>
     </Card>
-  );
-});
+  )
+})
 
-export default PricingCard; 
+export default PricingCard
