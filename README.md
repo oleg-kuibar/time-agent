@@ -1,7 +1,7 @@
-# Weekly PR Reports
+# Git Time Harvest
 
-[![Website](https://github.com/oleg-kuibar/weekly-pr-reports/actions/workflows/website.yml/badge.svg)](https://github.com/oleg-kuibar/weekly-pr-reports/actions/workflows/website.yml)
-[![App](https://github.com/oleg-kuibar/weekly-pr-reports/actions/workflows/github-app.yml/badge.svg)](https://github.com/oleg-kuibar/weekly-pr-reports/actions/workflows/github-app.yml)
+[![Website](https://github.com/oleg-kuibar/git-time-harvest/actions/workflows/website.yml/badge.svg)](https://github.com/oleg-kuibar/git-time-harvest/actions/workflows/website.yml)
+[![App](https://github.com/oleg-kuibar/git-time-harvest/actions/workflows/github-app.yml/badge.svg)](https://github.com/oleg-kuibar/git-time-harvest/actions/workflows/github-app.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 Automated time tracking for GitHub pull request reviews. Seamlessly integrates with Harvest and provides weekly reports.
@@ -17,7 +17,7 @@ Automated time tracking for GitHub pull request reviews. Seamlessly integrates w
 ## Project Structure
 
 ```
-weekly-pr-reports/
+git-time-harvest/
 ├── apps/
 │   ├── github-app/     # GitHub App backend (Express + Lambda)
 │   └── website/        # Documentation website
@@ -38,8 +38,8 @@ weekly-pr-reports/
 2. **Installation**
    ```bash
    # Clone the repository
-   git clone https://github.com/oleg-kuibar/weekly-pr-reports.git
-   cd weekly-pr-reports
+   git clone https://github.com/oleg-kuibar/git-time-harvest.git
+   cd git-time-harvest
 
    # Install dependencies
    pnpm install
@@ -48,7 +48,7 @@ weekly-pr-reports/
    cp apps/github-app/.env.example apps/github-app/.env
 
    # Generate Prisma client
-   pnpm --filter @weekly-pr-reports/github-app prisma:generate
+   pnpm --filter @git-time-harvest/github-app prisma:generate
    ```
 
 3. **Configuration**
@@ -59,10 +59,10 @@ weekly-pr-reports/
 4. **Development**
    ```bash
    # Start GitHub App in development mode
-   pnpm --filter @weekly-pr-reports/github-app dev
+   pnpm --filter @git-time-harvest/github-app dev
 
    # Run database migrations
-   pnpm --filter @weekly-pr-reports/github-app prisma:migrate
+   pnpm --filter @git-time-harvest/github-app prisma:migrate
    ```
 
 ## Documentation

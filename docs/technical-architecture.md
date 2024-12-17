@@ -3,7 +3,7 @@
 ## Application Structure
 
 ```
-apps/github-app/
+git-time-harvest/
 ├── src/
 │   ├── lambda/           # AWS Lambda functions
 │   ├── services/         # Core services (GitHub, cron, etc.)
@@ -120,18 +120,18 @@ SLACK_WEBHOOK_URL=
 1. **Local Development**
    ```bash
    pnpm install
-   pnpm --filter @weekly-pr-reports/github-app dev
+   pnpm --filter @git-time-harvest/github-app dev
    ```
 
 2. **Testing**
    ```bash
-   pnpm --filter @weekly-pr-reports/github-app test
+   pnpm --filter @git-time-harvest/github-app test
    ```
 
 3. **Database**
    ```bash
-   pnpm --filter @weekly-pr-reports/github-app prisma:generate
-   pnpm --filter @weekly-pr-reports/github-app prisma:migrate
+   pnpm --filter @git-time-harvest/github-app prisma:generate
+   pnpm --filter @git-time-harvest/github-app prisma:migrate
    ```
 
 ## Production Deployment

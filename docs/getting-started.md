@@ -1,6 +1,6 @@
 # Getting Started
 
-This guide will help you set up Weekly PR Reports for your organization.
+This guide will help you set up Git Time Harvest for your organization.
 
 ## Prerequisites
 
@@ -11,6 +11,7 @@ Before you begin, ensure you have:
 - PostgreSQL 14 or higher installed
 - A GitHub account with organization admin access
 - An AWS account (for production deployment)
+- A Harvest account for time tracking
 - Basic knowledge of TypeScript and Express.js
 
 ## Quick Start
@@ -19,8 +20,8 @@ Before you begin, ensure you have:
 
 ```bash
 # Clone the repository
-git clone https://github.com/oleg-kuibar/weekly-pr-reports.git
-cd weekly-pr-reports
+git clone https://github.com/oleg-kuibar/git-time-harvest.git
+cd git-time-harvest
 
 # Install dependencies
 pnpm install
@@ -30,7 +31,7 @@ pnpm install
 
 1. Go to GitHub Developer Settings
 2. Create a new GitHub App:
-   - Name: "Weekly PR Reports"
+   - Name: "Git Time Harvest"
    - Homepage URL: Your app's URL
    - Webhook URL: Your webhook endpoint
    - Permissions:
@@ -50,18 +51,19 @@ pnpm install
 ### 3. Configure Environment
 
 ```bash
-# Copy environment files
+# Copy environment file
 cp apps/github-app/.env.example apps/github-app/.env
-cp website/.env.example website/.env
 
-# Edit .env files with your credentials
+# Edit .env file with your credentials
 ```
 
 Required environment variables:
 ```env
 # GitHub App
 GITHUB_APP_ID=your_app_id
-GITHUB_PRIVATE_KEY=your_private_key
+GITHUB_PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
+your_private_key_here
+-----END RSA PRIVATE KEY-----"
 GITHUB_WEBHOOK_SECRET=your_webhook_secret
 GITHUB_CLIENT_ID=your_client_id
 GITHUB_CLIENT_SECRET=your_client_secret
@@ -71,14 +73,22 @@ AWS_REGION=us-east-1
 AWS_ACCESS_KEY_ID=your_access_key
 AWS_SECRET_ACCESS_KEY=your_secret_key
 AWS_RDS_SECRET_NAME=your_secret_name
-DATABASE_URL=postgresql://user:password@host:5432/database
+
+# Database
+DATABASE_URL=postgresql://admin:password@localhost:5432/git_time_harvest
+
+# Harvest
+HARVEST_ACCOUNT_ID=your_harvest_account_id
+HARVEST_ACCESS_TOKEN=your_harvest_token
+HARVEST_PROJECT_ID=your_project_id
+HARVEST_TASK_ID=your_task_id
 ```
 
 ### 4. Set Up Database
 
 1. Create PostgreSQL database:
    ```sql
-   CREATE DATABASE weekly_pr_reports;
+   CREATE DATABASE git_time_harvest;
    ```
 
 2. Run migrations:
@@ -88,20 +98,17 @@ DATABASE_URL=postgresql://user:password@host:5432/database
    pnpm prisma:generate
    ```
 
-### 5. Start Development Servers
+### 5. Start Development Server
 
 ```bash
 # Start GitHub App
-pnpm --filter @weekly-pr-reports/github-app dev
-
-# Start documentation website
-pnpm --filter @weekly-pr-reports/website dev
+pnpm --filter @git-time-harvest/github-app dev
 ```
 
 ## Project Structure
 
 ```
-weekly-pr-reports/
+git-time-harvest/
 ├── apps/
 │   ├── github-app/          # Main application
 │   │   ├── src/
@@ -144,10 +151,10 @@ weekly-pr-reports/
 pnpm test
 
 # Run tests for specific app
-pnpm --filter @weekly-pr-reports/github-app test
+pnpm --filter @git-time-harvest/github-app test
 
 # Run tests in watch mode
-pnpm --filter @weekly-pr-reports/github-app test:watch
+pnpm --filter @git-time-harvest/github-app test:watch
 ```
 
 ## Common Tasks
@@ -174,10 +181,9 @@ pnpm --filter @weekly-pr-reports/github-app test:watch
 
 ## Next Steps
 
-1. [Configure integrations](./configuration.md#integrations)
-2. [Set up production deployment](./configuration.md#production-configuration)
-3. [Review API documentation](./api-reference.md)
-4. [Explore advanced features](./advanced-features.md)
+1. [Configure AWS and GitHub App](./aws-github-setup.md)
+2. [Review technical architecture](./technical-architecture.md)
+3. [Set up production deployment](./aws-github-setup.md#production-deployment)
 
 ## Troubleshooting
 
@@ -200,6 +206,5 @@ pnpm --filter @weekly-pr-reports/github-app test:watch
 
 ### Getting Help
 
-- Search [GitHub Issues](https://github.com/oleg-kuibar/weekly-pr-reports/issues)
-- Join our [Discord community](https://discord.gg/weekly-pr-reports)
-- Review error logs in `logs/` directory 
+- Search [GitHub Issues](https://github.com/oleg-kuibar/git-time-harvest/issues)
+- Review error logs in `logs/` directory

@@ -7,7 +7,7 @@
    - Click "New GitHub App"
    - Fill in basic information:
      ```
-     Name: Weekly PR Reports
+     Name: Git Time Harvest
      Homepage URL: Your website URL
      Webhook URL: Your API Gateway URL (from AWS setup)
      Webhook Secret: Generate with `openssl rand -hex 20`
