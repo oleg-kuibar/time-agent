@@ -1,33 +1,31 @@
-import type { WebhookEventName } from "@octokit/webhooks-types";
-
 export interface ReviewData {
-  repo: string;
-  pr: number;
-  reviewer: string;
-  timeSpent: number;
-  startedAt: string;
-  completedAt: string;
-  comments: number;
+  repo: string
+  pr: number
+  reviewer: string
+  timeSpent: number
+  startedAt: string
+  completedAt: string
+  comments: number
 }
 
 export interface WebhookPayload {
-  action: string;
+  action: string
   review: {
-    id: number;
+    id: number
     user: {
-      login: string;
-    };
-    submitted_at: string;
-    state: 'approved' | 'changes_requested' | 'commented';
-  };
+      login: string
+    }
+    submitted_at: string
+    state: 'approved' | 'changes_requested' | 'commented'
+  }
   pull_request: {
-    number: number;
-    title: string;
+    number: number
+    title: string
     user: {
-      login: string;
-    };
-  };
+      login: string
+    }
+  }
   repository: {
-    full_name: string;
-  };
-} 
+    full_name: string
+  }
+}

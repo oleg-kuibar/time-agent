@@ -1,139 +1,68 @@
-import { Octokit } from "@octokit/rest";
-import { App } from "@octokit/app";
-import express from "express";
-import rateLimit from "express-rate-limit";
-import helmet from "helmet";
-import dotenv from "dotenv";
-import { Webhooks } from "@octokit/webhooks";
-import type { WebhookPayload, ReviewData } from "./types";
-import { calculateReviewTime, getReviewComments, storeReviewData } from './services/review';
-import { reportError } from './services/error';
-import { HarvestClient } from './services/harvest';
-import { sendSlackNotification } from './services/slack';
-import { logger } from './services/logger';
+import 'dotenv/config'
+import express from 'express'
+import helmet from 'helmet'
+import rateLimit from 'express-rate-limit'
+import { logger } from '@lib/logger'
+import { startCronJobs } from '@services/cron'
+import { initializeDatabase } from '@lib/database'
+import reportsRouter from '@domains/reports/router'
+import { config } from '@/config'
+import { isProd } from './config'
+import { RATE_LIMIT } from './constants'
+import { webhookMiddleware } from './services/github'
 
-dotenv.config();
-
-// Validate required environment variables
-const requiredEnvVars = [
-  'GITHUB_APP_ID',
-  'GITHUB_APP_PRIVATE_KEY',
-  'GITHUB_WEBHOOK_SECRET',
-  'DATABASE_URL'
-];
-
-requiredEnvVars.forEach(varName => {
-  if (!process.env[varName]) {
-    throw new Error(`Missing required environment variable: ${varName}`);
-  }
-});
-
-// Initialize GitHub App
-const app = new App({
-  appId: process.env.GITHUB_APP_ID!,
-  privateKey: process.env.GITHUB_APP_PRIVATE_KEY!,
-  webhooks: {
-    secret: process.env.GITHUB_WEBHOOK_SECRET!
-  }
-});
-
-const server = express();
-
-// Security middleware
-server.use(helmet());
-server.use(express.json({ limit: '1mb' }));
-server.use(rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100 // limit each IP to 100 requests per windowMs
-}));
-
-// Webhook handler
-const webhooks = new Webhooks({
-  secret: process.env.GITHUB_WEBHOOK_SECRET!,
-  transform: (event) => {
-    if (!event.payload.installation?.id) {
-      throw new Error('Missing installation ID');
-    }
-    return event;
-  }
-});
-
-// Handle pull request review events
-webhooks.on(['pull_request_review.submitted', 'pull_request.closed'], async ({ payload, octokit }) => {
+async function bootstrap() {
   try {
-    const { review, pull_request, repository } = payload as WebhookPayload;
-    
-    // Only process merged PRs
-    if (payload.action === 'closed' && !pull_request.merged) {
-      return;
-    }
+    // Initialize AWS and database connection
+    await initializeDatabase()
 
-    // Calculate review time
-    const timeSpent = await calculateReviewTime({
-      reviewId: review.id,
-      submittedAt: review.submitted_at,
-      installationId: payload.installation.id
-    });
+    const app = express()
 
-    const reviewData = {
-      repo: repository.full_name,
-      pr: pull_request.number,
-      reviewer: review.user.login,
-      timeSpent,
-      startedAt: review.submitted_at,
-      completedAt: new Date().toISOString(),
-      comments: await getReviewComments(octokit, repository.full_name, pull_request.number, review.id)
-    };
+    // Security middleware
+    app.use(helmet())
+    app.use(express.json())
+    app.use(
+      rateLimit({
+        windowMs: RATE_LIMIT.WINDOW_MS,
+        max: RATE_LIMIT.MAX_REQUESTS
+      })
+    )
 
-    // Store review data
-    await storeReviewData(reviewData);
+    // Routes
+    app.use('/api/webhook', (req, res, next) => {
+      webhookMiddleware(req, res, next).catch(next)
+    })
+    app.use('/api/reports', reportsRouter)
 
-    // Create Harvest time entry
-    const harvest = new HarvestClient();
-    await harvest.createTimeEntry(reviewData);
+    // Health check endpoint
+    app.get('/health', (_req, res) => {
+      res.json({ status: 'ok' })
+    })
 
-    // Send Slack notification
-    await sendSlackNotification({
-      ...reviewData,
-      url: pull_request.html_url
-    });
+    // Error handling middleware
+    app.use(
+      (err: Error, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+        logger.error('Unhandled error:', err)
+        res.status(500).json({ error: 'Internal server error' })
+      }
+    )
 
+    app.listen(config.PORT, () => {
+      logger.info(`🚀 Server is running on port ${config.PORT}`)
+
+      // Start cron jobs in production
+      if (isProd) {
+        startCronJobs()
+        logger.info('Started cron jobs')
+      }
+    })
   } catch (error) {
-    console.error('Error processing review:', error);
-    await reportError(error);
+    logger.error('Failed to start application:', error)
+    process.exit(1)
   }
-});
+}
 
-// Webhook endpoint with signature verification
-server.post('/webhooks/github', 
-  express.json({ verify: webhooks.verify }),
-  async (req, res) => {
-    try {
-      await webhooks.verifyAndReceive({
-        id: req.headers['x-github-delivery'] as string,
-        name: req.headers['x-github-event'] as string,
-        payload: req.body,
-        signature: req.headers['x-hub-signature-256'] as string
-      });
-      res.status(200).send('OK');
-    } catch (error) {
-      console.error('Webhook error:', error);
-      res.status(400).send('Invalid webhook payload');
-    }
-  }
-);
-
-// Health check endpoint
-server.get('/healthz', (_, res) => {
-  res.status(200).send('OK');
-});
-
-const port = process.env.PORT || 3000;
-server.listen(port, () => {
-  logger.info(`GitHub App is running on port ${port}`, { port });
-});
-
-process.on('unhandledRejection', (error) => {
-  logger.error('Unhandled rejection', { error });
-  reportError(error);
-});
+bootstrap().catch(error => {
+  logger.error('Failed to bootstrap application:', error)
+  process.exit(1)
+})

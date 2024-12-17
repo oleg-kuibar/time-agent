@@ -1,34 +1,36 @@
-import type { ReviewData } from '../types';
+import type { ReviewData } from '../types'
+import type { Octokit } from '@octokit/rest'
+import { logger } from '@lib/logger'
 
 interface ReviewTimeParams {
-  reviewId: number;
-  submittedAt: string;
+  reviewId: number
+  submittedAt: string
 }
 
-export async function calculateReviewTime({ submittedAt }: ReviewTimeParams): Promise<number> {
+export function calculateReviewTime(_params: ReviewTimeParams): number {
   // Simple calculation: assume review started 15 minutes ago
-  return 15;
+  return 15
 }
 
 export async function getReviewComments(
-  octokit: any,
+  octokit: Octokit,
   repoFullName: string,
   prNumber: number,
   reviewId: number
 ): Promise<number> {
-  const [owner, repo] = repoFullName.split('/');
-  
-  const { data: comments } = await octokit.pulls.listCommentsForReview({
+  const [owner, repo] = repoFullName.split('/')
+
+  const response = await octokit.pulls.listCommentsForReview({
     owner,
     repo,
     pull_number: prNumber,
     review_id: reviewId
-  });
+  })
 
-  return comments.length;
+  return response.data.length
 }
 
-export async function storeReviewData(data: ReviewData): Promise<void> {
-  // For now, just log the data
-  console.log('Review data:', data);
-} 
+export function storeReviewData(data: ReviewData): void {
+  // Use logger instead of console.log
+  logger.info('Review data:', data)
+}

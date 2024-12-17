@@ -1,11 +1,12 @@
-import { logger } from './logger';
+import { logger } from '../lib/logger'
 
-export async function reportError(error: Error | unknown, context?: Record<string, unknown>): Promise<void> {
-  logger.error('Error:', {
-    message: error instanceof Error ? error.message : 'Unknown error',
+export function reportError(error: unknown, context: Record<string, unknown> = {}) {
+  const errorDetails = {
+    name: error instanceof Error ? error.name : 'UnknownError',
+    message: error instanceof Error ? error.message : String(error),
     stack: error instanceof Error ? error.stack : undefined,
-    context,
-    awsRequestId: process.env.AWS_REQUEST_ID,
-    functionVersion: process.env.AWS_LAMBDA_FUNCTION_VERSION
-  });
-} 
+    ...context
+  }
+
+  logger.error('Error occurred:', errorDetails)
+}
