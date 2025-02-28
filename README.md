@@ -1,108 +1,203 @@
-# Git Time Harvest
+# Time Agent
 
-[![Website](https://github.com/oleg-kuibar/git-time-harvest/actions/workflows/website.yml/badge.svg)](https://github.com/oleg-kuibar/git-time-harvest/actions/workflows/website.yml)
-[![App](https://github.com/oleg-kuibar/git-time-harvest/actions/workflows/github-app.yml/badge.svg)](https://github.com/oleg-kuibar/git-time-harvest/actions/workflows/github-app.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3-blue)](https://www.typescriptlang.org/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
+[![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-4.0-38b2ac)](https://tailwindcss.com/)
+[![tRPC](https://img.shields.io/badge/tRPC-10.0-2596be)](https://trpc.io/)
 
-Automated time tracking for GitHub pull request reviews. Seamlessly integrates with Harvest and provides weekly reports.
+Time Agent is an intelligent assistant that simplifies time tracking for developers through passive monitoring, AI-powered categorization, and smart integrations.
 
-## Features
+## 🌟 Features
 
-- 📊 Weekly PR review time reports
-- ⚡ Automatic time tracking
-- 🔄 Harvest integration
-- 💬 Slack notifications
-- 📱 Mobile-friendly dashboard
+- **👻 Passive Tracking**: Background monitoring across development environments without disruption
+- **🤖 AI-Powered Analysis**: Automatic task detection and smart categorization of activities
+- **📊 Developer Dashboard**: Clean, intuitive interface for reviewing and managing time
+- **🔄 Smart Integrations**: Seamless connections with developer tools (GitHub, Jira, VSCode)
+- **📈 Time Insights**: Data-driven productivity patterns and work-life balance recommendations
+- **🔒 Type-Safe APIs**: End-to-end type safety between server and all clients
 
-## Project Structure
+## 🧰 Tech Stack
+
+- **Frontend & Backend**: [Next.js 15](https://nextjs.org/) with App Router
+- **UI Framework**: [React 19](https://react.dev/)
+- **Database & Auth**: [Supabase](https://supabase.com/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) with [shadcn/ui](https://ui.shadcn.com/)
+- **API Layer**: [tRPC](https://trpc.io/) for type-safe APIs
+- **AI**: [OpenAI API](https://openai.com/) (GPT-4o)
+- **Data Fetching**: [TanStack Query](https://tanstack.com/query)
+- **Extensions**:
+  - VSCode Extension
+  - Browser Extension (Chrome/Firefox)
+  - Desktop Agent (Electron)
+
+## 🏗️ Project Structure
 
 ```
-git-time-harvest/
-├── apps/
-│   ├── github-app/     # GitHub App backend (Express + Lambda)
-│   └── website/        # Documentation website
-├── docs/              # Project documentation
-└── packages/          # Shared packages (future)
+time-agent/
+├── app/                 # Next.js app directory
+│   ├── api/             # API endpoints
+│   │   └── trpc/        # tRPC API routes
+│   ├── dashboard/       # Main dashboard UI
+│   ├── reports/         # Time reports
+│   └── settings/        # User configuration
+├── components/          # Reusable UI components
+├── lib/                 # Core functionality
+│   ├── ai/              # AI processing modules
+│   │   ├── classifier.ts      # Activity classification
+│   │   ├── predictor.ts       # Time estimation
+│   │   └── summarizer.ts      # Work summaries
+│   ├── tracking/        # Activity tracking
+│   │   ├── activity.ts        # Activity detection
+│   │   ├── idle.ts            # Idle detection
+│   │   └── timeline.ts        # Timeline generation
+│   ├── trpc/            # tRPC implementation
+│   │   ├── server/            # Server-side tRPC
+│   │   │   ├── routers/       # API route definitions
+│   │   │   └── trpc.ts        # tRPC initialization
+│   │   └── client/            # Client-side tRPC
+│   └── integrations/    # External services
+│       ├── github.ts          # GitHub integration
+│       ├── jira.ts            # Jira integration
+│       └── calendar.ts        # Calendar integration
+├── public/              # Static assets
+└── extensions/          # Client extensions
+    ├── shared/          # Shared code between extensions
+    │   └── trpc-client.ts     # tRPC client for extensions
+    ├── vscode/          # VSCode extension
+    ├── browser/         # Chrome/Firefox extension
+    └── desktop/         # Desktop agent (Electron)
 ```
 
-## Quick Start
+## 🚀 Getting Started
 
-1. **Prerequisites**
-   - Node.js 18+
-   - pnpm 9.14+
-   - PostgreSQL 14+
-   - GitHub account
-   - AWS account (for production)
-   - Harvest account (for time tracking)
+### Prerequisites
 
-2. **Installation**
+- Node.js 20+ and npm/pnpm
+- Supabase account
+- OpenAI API key
+- GitHub account (for integrations)
+
+### Installation
+
+1. **Clone the repository**
    ```bash
-   # Clone the repository
-   git clone https://github.com/oleg-kuibar/git-time-harvest.git
-   cd git-time-harvest
+   git clone https://github.com/yourusername/time-agent.git
+   cd time-agent
+   ```
 
-   # Install dependencies
+2. **Install dependencies**
+   ```bash
+   npm install
+   # or
    pnpm install
-
-   # Set up environment variables
-   cp apps/github-app/.env.example apps/github-app/.env
-
-   # Generate Prisma client
-   pnpm --filter @git-time-harvest/github-app prisma:generate
    ```
 
-3. **Configuration**
-   - Set up GitHub App (see [AWS and GitHub App Setup](./docs/aws-github-setup.md))
-   - Configure environment variables
-   - Set up AWS resources for production
-
-4. **Development**
+3. **Set up environment variables**
    ```bash
-   # Start GitHub App in development mode
-   pnpm --filter @git-time-harvest/github-app dev
+   cp .env.example .env.local
+   ```
+   Fill in the required environment variables in `.env.local`.
 
-   # Run database migrations
-   pnpm --filter @git-time-harvest/github-app prisma:migrate
+4. **Run database migrations**
+   ```bash
+   npx supabase migration up
    ```
 
-## Documentation
+5. **Start the development server**
+   ```bash
+   npm run dev
+   # or
+   pnpm dev
+   ```
 
-- [Getting Started](./docs/getting-started.md)
-- [Technical Architecture](./docs/technical-architecture.md)
-- [AWS and GitHub App Setup](./docs/aws-github-setup.md)
-- [Configuration](./docs/configuration.md)
-- [API Reference](./docs/api-reference.md)
-- [Contributing](./docs/contributing.md)
+Visit `http://localhost:3000` to see the application.
 
-## Production Setup
+## ⚙️ Core Components
 
-1. **GitHub App**
-   - Create GitHub App in your organization
-   - Configure webhook and permissions
-   - Generate private key and secrets
-   - Install in repositories
+### 1. Time Tracking Engine
 
-2. **AWS Infrastructure**
-   - Set up Lambda function
-   - Configure API Gateway
-   - Create RDS database
-   - Set up CloudWatch monitoring
+The heart of Time Agent is a sophisticated tracking engine that:
+- Collects activity data from multiple sources
+- Uses heuristics to detect active vs. idle time
+- Correlates activities with tasks and projects
+- Provides a unified timeline of developer activities
 
-3. **Integrations**
-   - Configure Harvest time tracking
-   - Set up Slack notifications
-   - Configure AWS Secrets Manager
+### 2. API Layer
 
-See [Technical Architecture](./docs/technical-architecture.md) for detailed setup instructions.
+Time Agent uses tRPC to provide end-to-end type safety:
+- Automatic type inference between server and clients
+- Strongly-typed procedures for all operations
+- Seamless integration with React and extensions
+- Secure authentication and authorization
 
-## Contributing
+### 3. AI Processing Pipeline
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+Time Agent leverages OpenAI's models to:
+- Classify activities into meaningful categories
+- Predict time requirements for similar tasks
+- Generate natural language summaries of work
+- Identify productivity patterns and suggestions
 
-## License
+### 4. Integration Hub
+
+Time Agent connects with common developer tools:
+- **GitHub**: Track commit activity, PR reviews, and code changes
+- **Jira/Linear**: Link time entries to specific tickets
+- **VSCode**: Monitor file editing patterns and coding activity
+- **Google Calendar**: Incorporate meeting time and context switching
+
+## 🛠️ Extension Development
+
+### VSCode Extension
+
+```bash
+cd extensions/vscode
+npm install
+npm run build
+```
+
+### Browser Extension
+
+```bash
+cd extensions/browser
+npm install
+npm run build
+```
+
+### Desktop Agent
+
+```bash
+cd extensions/desktop
+npm install
+npm run build
+```
+
+## 📚 Documentation
+
+- [User Guide](docs/user-guide.md)
+- [API Reference](docs/api-reference.md)
+- [Architecture Overview](docs/architecture.md)
+- [Extension Development](docs/extensions.md)
+- [Contributing Guidelines](CONTRIBUTING.md)
+
+## 🗺️ Roadmap
+
+- [ ] **Phase 1**: Foundation (dashboard, auth, manual tracking)
+- [ ] **Phase 2**: Basic tracking (VSCode, GitHub)
+- [ ] **Phase 3**: AI intelligence (categorization, prediction)
+- [ ] **Phase 4**: Advanced features (browser extension, integrations)
+- [ ] **Phase 5**: Mobile app and team features
+
+## 📝 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🙏 Acknowledgements
+
+- OpenAI for the AI capabilities
+- Next.js team for the amazing framework
+- Supabase for the database infrastructure
+- tRPC team for the type-safe API framework
+- All open-source libraries used in this project 
